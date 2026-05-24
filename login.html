@@ -7,20 +7,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-dark: #0f172a;
-            --trust-blue: #1e293b;
-            --accent-gold: #fbbf24;
-            --white: #ffffff;
-            --error-red: #ef4444;
+:root {
+            --ide-bg: #1e1e1e;          /* خلفية المحرر الافتراضية VS Code */
+            --ide-sidebar: #252526;     /* خلفية العناصر الجانبية والبطاقات */
+            --accent-orange: #f47424;   /* لون لغة البرمجة والشغف */
+            --syntax-keyword: #569cd6;  /* أزرق الأكواد البرمجية */
+            --syntax-string: #ce9178;   /* لون النصوص داخل الكود */
+            --syntax-type: #4ec9b0;     /* اللون الفيروزي للمتغيرات */
+            --syntax-comment: #6a9955;  /* أخضر التعليقات */
+            --text-main: #d4d4d4;       /* لون النص الافتراضي */
+            --error-red: #f14c4c;       /* أحمر الأخطاء البرمجية */
+            --font-code: 'Consolas', 'Fira Code', 'Courier New', monospace;
         }
 
+        /* --- Base & Terminal Grid Background --- */
         body {
             font-family: 'Tajawal', sans-serif;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            background-color: #121212;
+            background-image: 
+                radial-gradient(rgba(86, 156, 214, 0.02) 1px, transparent 0),
+                radial-gradient(rgba(244, 116, 36, 0.01) 1px, transparent 0);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
             margin: 0;
-            padding: 0;
-            color: var(--white);
+            padding: 20px;
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -28,40 +39,88 @@
             box-sizing: border-box;
         }
 
+        /* --- IDE Code Window Box --- */
         .login-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(16px);
-            border-radius: 24px;
-            padding: 40px;
+            background: var(--ide-bg);
+            border: 1px solid #333333;
+            border-radius: 14px;
+            padding: 40px 35px;
             width: 100%;
-            max-width: 420px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            text-align: center;
+            max-width: 440px;
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
         }
 
-        .logo {
-            font-weight: 800;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
+        /* شريط علوي يحاكي تبويب الملف البرمجي */
+        .login-card::before {
+            content: "🔑 auth_service.py";
+            position: absolute;
+            top: 0;
+            left: 25px;
+            background: var(--ide-sidebar);
+            color: var(--syntax-string);
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            padding: 6px 16px;
+            border-radius: 0 0 6px 6px;
+            border: 1px solid #333333;
+            border-top: none;
         }
+
+        /* دمج خطوط أرقام الأسطر الجانبية للمطورين */
+        .login-card::after {
+            content: "01\A 02\A 03\A 04\A 05\A 06\A 07\A 08\A 09\A 10\A 11\A 12";
+            white-space: pre;
+            position: absolute;
+            right: 12px;
+            top: 45px;
+            color: #5a5a5a;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            line-height: 2.75;
+            text-align: left;
+            pointer-events: none;
+        }
+
+        /* --- Logo & Titles --- */
+        .logo {
+            font-family: var(--font-code);
+            font-weight: 700;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            color: var(--syntax-keyword);
+            direction: ltr;
+            text-align: center;
+            padding-left: 15px; /* موازنة بسبب أرقام الأسطر اليمينية */
+        }
+
+        .logo::before { content: "class "; color: #9cdcfe; }
+        .logo::after { content: ":"; color: var(--text-main); }
 
         .subtitle {
-            color: #94a3b8;
-            font-size: 0.95rem;
+            color: var(--syntax-comment);
+            font-family: var(--font-code);
+            font-size: 0.88rem;
             margin-bottom: 35px;
+            text-align: center;
+            padding-left: 15px;
         }
 
+        .subtitle::before { content: "# "; }
+
+        /* --- Custom Code Forms --- */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             text-align: right;
+            padding-right: 25px; /* إزاحة العناصر لتفادي أرقام الأسطر */
         }
 
         .form-group label {
             display: block;
+            font-family: var(--font-code);
             font-size: 0.85rem;
-            color: #cbd5e1;
+            color: var(--syntax-type);
             margin-bottom: 8px;
             font-weight: 500;
         }
@@ -70,68 +129,93 @@
             position: relative;
         }
 
+        /* الأيقونات البرمجية داخل المدخلات */
         .input-wrapper i {
             position: absolute;
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.3);
+            color: #5a5a5a;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
         }
 
         .form-group input {
             width: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 14px 45px 14px 15px;
-            color: var(--white);
-            font-family: 'Tajawal';
-            font-size: 0.95rem;
+            background: var(--ide-sidebar);
+            border: 1px solid #3c3c3c;
+            border-radius: 8px;
+            padding: 13px 45px 13px 15px;
+            color: #ffffff;
+            font-family: var(--font-code);
+            font-size: 0.92rem;
             box-sizing: border-box;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* تأثير التركيز يشبه سطر الكود النشط */
         .form-group input:focus {
             outline: none;
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 12px rgba(251, 191, 36, 0.15);
+            border-color: var(--syntax-keyword);
+            background: #2d2d2d;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
         }
 
+        .form-group input:focus + i {
+            color: var(--syntax-keyword);
+        }
+
+        /* --- Execute / Login Button --- */
         .login-btn {
-            width: 100%;
-            background: var(--accent-gold);
-            color: #0f172a;
-            border: none;
+            width: calc(100% - 25px);
+            margin-right: 25px;
+            background: transparent;
+            color: var(--accent-orange);
+            border: 1px solid var(--accent-orange);
             padding: 14px;
-            border-radius: 12px;
-            font-family: 'Tajawal';
-            font-size: 1rem;
+            border-radius: 8px;
+            font-family: var(--font-code);
+            font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
             transition: all 0.25s ease;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
+            box-shadow: 0 4px 15px rgba(244, 116, 36, 0.05);
         }
 
         .login-btn:hover {
-            background: #f59e0b;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+            background: rgba(244, 116, 36, 0.08);
+            box-shadow: 0 0 20px rgba(244, 116, 36, 0.2);
+            transform: scale(0.99);
         }
 
+        .login-btn:disabled {
+            border-color: #5a5a5a;
+            color: #7a7a7a;
+            cursor: not-allowed;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        /* --- Terminal Error Alert --- */
         .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(241, 76, 76, 0.05);
+            border: 1px solid rgba(241, 76, 76, 0.25);
             color: var(--error-red);
-            padding: 12px;
-            border-radius: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-family: var(--font-code);
             font-size: 0.85rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            margin-right: 25px;
             display: none;
             text-align: right;
+            line-height: 1.5;
+            box-shadow: 0 4px 15px rgba(241, 76, 76, 0.05);
         }
     </style>
 </head>
