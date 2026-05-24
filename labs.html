@@ -8,120 +8,134 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
       :root {
-            --bg-darker: #060813;
-            --bg-card: rgba(13, 20, 38, 0.6);
-            --accent-gold: #fbbf24;
-            --accent-gold-glow: rgba(251, 191, 36, 0.15);
-            --cyber-blue: #0ea5e9;
-            --cyber-blue-glow: rgba(14, 165, 233, 0.2);
-            --prog-purple: #a855f7;
-            --prog-purple-glow: rgba(168, 85, 247, 0.2);
-            --logout-red: #f43f5e;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --header-height: 80px;
-            --border-glow: rgba(255, 255, 255, 0.05);
+            --ide-bg: #1e1e1e;          /* خلفية المحرر الافتراضية VS Code */
+            --ide-sidebar: #252526;     /* خلفية القائمة الجانبية */
+            --ide-header: #3c3c3c;      /* لون شريط التحكم العلوي */
+            --accent-orange: #f47424;   /* لون لغة البرمجة والشغف */
+            --syntax-keyword: #569cd6;  /* أزرق الأكواد البرمجية */
+            --syntax-string: #ce9178;   /* لون النصوص داخل الكود */
+            --syntax-comment: #6a9955;  /* أخضر التعليقات البرمجية */
+            --syntax-type: #4ec9b0;     /* اللون الفيروزي للمتغيرات */
+            --text-main: #d4d4d4;       /* لون النص البرمجي الافتراضي */
+            --header-height: 65px;
+            --font-code: 'Consolas', 'Fira Code', 'Courier New', monospace;
         }
 
-        /* --- Base & Futuristic Grid Background --- */
+        /* --- Base Setup & Code Background --- */
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-darker);
+            background-color: #121212;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: center;
+                radial-gradient(rgba(86, 156, 214, 0.03) 1px, transparent 0),
+                radial-gradient(rgba(244, 116, 36, 0.02) 1px, transparent 0);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
             margin: 0;
             padding: 0;
             color: var(--text-main);
             min-height: 100vh;
             box-sizing: border-box;
-            overflow-x: hidden;
         }
 
-        /* --- Premium Floating Header --- */
+        /* --- IDE Styled Header --- */
         header {
             height: var(--header-height);
-            background: rgba(6, 8, 19, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--ide-sidebar);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 60px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 0 30px;
+            border-bottom: 2px solid #2d2d2d;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
         .header-logo {
-            font-weight: 800;
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+            font-family: var(--font-code);
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--syntax-keyword);
+            direction: ltr; /* لتبدو كدالة برمجية صريحة */
         }
 
-        /* --- Glassmorphic Cyber Buttons --- */
+        .header-logo::before {
+            content: "import { ";
+            color: #c586c0; /* لون الـ Statement */
+        }
+
+        .header-logo::after {
+            content: " } from 'TechFlow';";
+            color: var(--text-main);
+        }
+
+        /* --- Developer Terminal Logout Button --- */
         .logout-btn {
-            background: rgba(244, 63, 94, 0.06);
-            color: #fda4af;
-            border: 1px solid rgba(244, 63, 94, 0.25);
-            padding: 10px 22px;
-            border-radius: 14px;
+            background: transparent;
+            color: #f14c4c;
+            border: 1px solid #f14c4c;
+            padding: 8px 18px;
+            border-radius: 6px;
             cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
+            font-family: var(--font-code);
+            font-weight: bold;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.05);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 8px;
+            transition: all 0.2s ease-in-out;
         }
 
         .logout-btn:hover {
-            background: var(--logout-red);
-            color: var(--text-main);
-            border-color: var(--logout-red);
-            box-shadow: 0 0 25px rgba(244, 63, 94, 0.45);
-            transform: translateY(-2px);
+            background: rgba(241, 76, 76, 0.1);
+            box-shadow: 0 0 12px rgba(241, 76, 76, 0.2);
+            transform: scale(0.98);
         }
 
-        /* --- Main Container --- */
+        /* --- Container Layout --- */
         .container {
-            max-width: 1440px;
-            margin: 40px auto;
-            padding: 0 30px;
+            max-width: 1500px;
+            margin: 30px auto;
+            padding: 0 20px;
             display: grid;
-            grid-template-columns: 2.3fr 1fr;
-            gap: 35px;
+            grid-template-columns: 2.4fr 1fr;
+            gap: 25px;
         }
 
-        /* --- Advanced Video Section --- */
+        /* --- Compiler / Video Terminal Section --- */
         .video-section {
-            background: var(--bg-card);
-            border-radius: 28px;
-            padding: 28px;
-            border: 1px solid var(--border-glow);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
-            height: fit-content;
+            background: var(--ide-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #333333;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        /* محاكاة شريط التبويبات العلوي للمحرر */
+        .video-section::before {
+            content: "📄 main_compiler.java ●";
+            position: absolute;
+            top: -26px;
+            right: 20px;
+            background: var(--ide-bg);
+            color: var(--syntax-type);
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            padding: 4px 14px;
+            border-radius: 6px 6px 0 0;
+            border: 1px solid #333333;
+            border-bottom: none;
         }
 
         .video-container {
             width: 100%;
             aspect-ratio: 16/9;
             background: #000;
-            border-radius: 20px;
+            border-radius: 8px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-            position: relative;
+            border: 1px solid #2d2d2d;
         }
 
         .video-container iframe {
@@ -131,125 +145,109 @@
         }
 
         #currentTitle {
-            margin: 25px 0 0 0;
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: var(--text-main);
+            margin: 20px 0 0 0;
+            font-family: var(--font-code);
+            font-size: 1.15rem;
+            color: var(--syntax-string);
+            background: rgba(206, 145, 120, 0.05);
+            padding: 12px 16px;
+            border-right: 4px solid var(--accent-orange);
+            border-radius: 4px;
             line-height: 1.6;
-            letter-spacing: -0.3px;
         }
 
-        /* --- Sidebar & Neomorphic Cards --- */
+        #currentTitle::before {
+            content: "System.out.println(\"";
+            color: var(--syntax-keyword);
+        }
+        #currentTitle::after {
+            content: "\");";
+            color: var(--text-main);
+        }
+
+        /* --- Workspace Sidebar --- */
         .lessons-sidebar {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
         }
 
         .category-card {
-            background: var(--bg-card);
-            border-radius: 28px;
-            padding: 26px;
-            border: 1px solid var(--border-glow);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+            background: var(--ide-sidebar);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #2d2d2d;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
         .category-card h3 {
-            margin: 0 0 22px 0;
-            font-size: 1.25rem;
-            font-weight: 800;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 14px;
+            margin: 0 0 15px 0;
+            font-family: var(--font-code);
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            letter-spacing: -0.2px;
+            gap: 10px;
         }
 
-        /* Section Headings Glowing Effects */
-        .cyber-title { 
-            color: var(--cyber-blue); 
-            text-shadow: 0 0 20px var(--cyber-blue-glow);
-        }
-        .programming-title { 
-            color: var(--prog-purple); 
-            text-shadow: 0 0 20px var(--prog-purple-glow);
-        }
+        .cyber-title { color: var(--syntax-type); }
+        .programming-title { color: #dcdcaa; } /* لون الدوال في VS Code */
 
-        /* --- Glowing & Interactive Lesson Boxes --- */
+        /* --- Git Commit Style Lesson Boxes --- */
         .lesson-box {
-            background: rgba(255, 255, 255, 0.015);
-            border-radius: 16px;
-            padding: 16px 20px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            margin-bottom: 14px;
+            background: rgba(30, 30, 30, 0.5);
+            border-radius: 6px;
+            padding: 12px 16px;
+            border: 1px solid transparent;
+            border-left: 3px solid #424242; /* افتراضي غير نشط */
+            margin-bottom: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 16px;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .lesson-box:last-child {
             margin-bottom: 0;
         }
 
-        /* Hover Mechanics */
+        /* تأثير التمرير يحاكي اختيار السطر البرمجي وعلامة الـ Git المحدثة */
         .lesson-box:hover {
-            background: rgba(251, 191, 36, 0.04);
-            border-color: rgba(251, 191, 36, 0.35);
-            box-shadow: 0 10px 25px var(--accent-gold-glow);
-            transform: translateX(-8px);
+            background: #2a2d2e;
+            border-color: #383b3d;
+            border-left-color: var(--syntax-keyword);
+            transform: scale(1.01);
         }
 
-        /* Smooth scale for the play icon */
         .lesson-box i {
-            font-size: 1.25rem;
-            color: var(--accent-gold);
-            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
-            transition: transform 0.3s ease;
-        }
-
-        .lesson-box:hover i {
-            transform: scale(1.15);
+            font-size: 1rem;
+            color: var(--syntax-comment);
         }
 
         .lesson-box span {
-            font-size: 0.98rem;
-            color: #cbd5e1;
-            font-weight: 500;
-            line-height: 1.5;
-            transition: color 0.3s ease;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: #cccccc;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .lesson-box:hover span {
-            color: var(--text-main);
+            color: #ffffff;
         }
 
-        /* --- Responsive Design Upgrades --- */
-        @media (max-width: 1200px) {
+        /* --- Responsive Tweaks --- */
+        @media (max-width: 1100px) {
             .container {
                 grid-template-columns: 1fr;
-                gap: 30px;
-                margin: 20px auto;
+                margin: 40px auto;
             }
-            header {
-                padding: 0 30px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .video-section, .category-card {
-                padding: 18px;
-                border-radius: 20px;
-            }
-            .video-container {
-                border-radius: 14px;
-            }
-            #currentTitle {
-                font-size: 1.2rem;
+            .video-section::before {
+                display: none; /* إخفاء علامة التبويب في الشاشات الصغيرة لتجنب التداخل */
             }
         }
     </style>
