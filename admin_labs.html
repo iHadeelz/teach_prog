@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>لوحة تحكم إدارة الأكاديمية - المحدثة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #1e293b; --accent: #fbbf24; --success: #10b981; --secondary: #64748b; }
+        body { font-family: system-ui, -apple-system, sans-serif; margin: 0; background: #f8fafc; color: #334155; display: flex; }
+        .sidebar { width: 260px; background: var(--primary); color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; position: fixed; }
+        .sidebar h2 { color: var(--accent); text-align: center; margin-bottom: 30px; }
+        .nav-link { padding: 12px 15px; margin: 8px 0; border-radius: 8px; display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.05); }
+        .main { margin-right: 260px; width: calc(100% - 260px); padding: 30px; box-sizing: border-box; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .stat-card { background: white; padding: 25px; border-radius: 12px; display: flex; align-items: center; gap: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); max-width: 350px; margin-bottom: 30px; border-right: 5px solid var(--accent); }
+        .stat-card i { font-size: 2.5rem; color: var(--accent); }
+        .stat-card h4 { margin: 0; color: var(--secondary); font-size: 1.1rem; }
+        .stat-card span { font-size: 2rem; font-weight: bold; color: var(--primary); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card h3 { margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--primary); border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
+        input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 0.95rem; }
+        button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        button:hover { opacity: 0.9; }
+        .btn-success { background: var(--success); }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>TechFlow Admin</h2>
+        <div class="nav-link"><i class="fas fa-user-shield"></i> لوحة الإدارة المحدثة</div>
+    </div>
+
+    <div class="main">
+        <div class="header">
+            <div>
+                <h1>لوحة التحكم الإدارية ✨</h1>
+                <p>مرحباً يا <b>هدولتي</b>، تم ضبط اللوحة وتأمين الاتصال بقاعدة البيانات بنجاح.</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-user-graduate"></i>
+            <div>
+                <h4>إجمالي عدد الطالبات</h4>
+                <span id="totalStudents">0</span>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            
+            <div class="card">
+                <h3><i class="fas fa-user-plus"></i> إضافة طالبة جديدة للنظام</h3>
+                <input type="text" id="newStudentName" placeholder="اسم الطالبة">
+                <input type="email" id="newStudentEmail" placeholder="البريد الإلكتروني للطالبة">
+                <input type="text" id="newStudentCode" placeholder="رمز الإيميل (كلمة المرور)">
+                <button id="addStudentBtn">إضافة وحفظ الطالبة ✨</button>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-book-medical"></i> إضافة درس جديد</h3>
+                <input type="text" id="videoTitle" placeholder="عنوان الدرس">
+                <select id="videoCategory">
+                    <option value="cyber">🛡️ الأمن السيبراني</option>
+                    <option value="programming">💻 لغات البرمجة</option>
+                </select>
+                <input type="text" id="videoUrl" placeholder="رابط الدرس (Google Drive)">
+                <button id="uploadContentBtn" class="btn-success">نشر الدرس الآن 🚀</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // إعدادات مشروعكِ الخاص بـ Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjXncHwNn0tjweqvmJKmoF9BBkff4vU90",
+            authDomain: "labs-3c92f.firebaseapp.com",
+            projectId: "labs-3c92f",
+            storageBucket: "labs-3c92f.firebasestorage.app",
+            messagingSenderId: "1081268346222",
+            appId: "1:1081268346222:web:fd8e4f28082bd72bfdb57f",
+            measurementId: "G-ZH9N90EGD3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // 1. حساب وعرض إجمالي عدد الطالبات تلقائياً وبشكل حي
+        onSnapshot(collection(db, "students"), snap => {
+            const totalStudentsEl = document.getElementById('totalStudents');
+            if (totalStudentsEl) totalStudentsEl.innerText = snap.size;
+        });
+
+        // 2. معالجة وحفظ زر إضافة طالبة جديدة
+        document.getElementById('addStudentBtn').onclick = async () => {
+            const nameInput = document.getElementById('newStudentName');
+            const emailInput = document.getElementById('newStudentEmail');
+            const codeInput = document.getElementById('newStudentCode');
+            
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
+            const code = codeInput.value.trim();
+
+            if (!name || !email || !code) { 
+                alert("هدولتي، يرجى ملء جميع حقول الطالبة (الاسم، الإيميل، والرمز) 🌸"); 
+                return; 
+            }
+            
+            try {
+                // الحفظ المباشر داخل مجموعة students بمطابقة حقول الكونسول لديكِ تماماً
+                await addDoc(collection(db, "students"), { 
+                    first_name: name, 
+                    email: email, 
+                    pass: code, 
+                    role: "student"
+                });
+                
+                alert(`تم إضافة الطالبة ${name} بنجاح يا هدولتي! ✨`);
+                nameInput.value = ""; emailInput.value = ""; codeInput.value = "";
+            } catch (error) { 
+                console.error("Firebase Add Student Error:", error);
+                alert("حدث خطأ أثناء محاولة إضافة الطالبة ❌"); 
+            }
+        };
+
+        // 3. معالجة وحفظ زر إضافة درس جديد
+        document.getElementById('uploadContentBtn').onclick = async () => {
+            const titleInput = document.getElementById('videoTitle');
+            const categorySelect = document.getElementById('videoCategory');
+            const urlInput = document.getElementById('videoUrl');
+
+            const title = titleInput.value.trim();
+            const category = categorySelect.value;
+            const url = urlInput.value.trim();
+
+            if (!title || !url) { 
+                alert("هدولتي، تأكدي من كتابة عنوان الدرس ورابط الفيديو 🌸"); 
+                return; 
+            }
+            if (!url.includes("drive.google.com")) { 
+                alert("تنبيه هدولتي: النظام مخصص لروابط Google Drive فقط! ⚠️"); 
+                return; 
+            }
+
+            try {
+                // الحفظ المباشر داخل مجموعة lessons بمطابقة حقول الكونسول لديكِ تماماً
+                await addDoc(collection(db, "lessons"), { 
+                    title: title, 
+                    category: category, 
+                    url: url, 
+                    createdAt: serverTimestamp() 
+                });
+                
+                alert(`تم نشر درس "${title}" بنجاح في القسم المطلوب! 🚀`);
+                titleInput.value = ""; urlInput.value = "";
+            } catch (error) { 
+                console.error("Firebase Add Lesson Error:", error);
+                alert("حدث خطأ أثناء رفع الدرس ❌"); 
+            }
+        };
+    </script>
+</body>
+</html>

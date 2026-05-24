@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | TechFlow Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --trust-blue: #1e293b;
+            --accent-gold: #fbbf24;
+            --white: #ffffff;
+            --error-red: #ef4444;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            margin: 0;
+            padding: 0;
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px 45px 14px 15px;
+            color: var(--white);
+            font-family: 'Tajawal';
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 12px rgba(251, 191, 36, 0.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            background: var(--accent-gold);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Tajawal';
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.25s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover {
+            background: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--error-red);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: none;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="logo">TechFlow <span style="color: var(--accent-gold);">Academy</span></div>
+        <div class="subtitle">سجلي دخولكِ للوصول إلى دروسكِ مباشرة وبكل سهولة</div>
+
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorText">تنبيه بالخطأ</span>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label>البريد الإلكتروني</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" placeholder="example@techflow.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>كلمة المرور</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn" id="submitBtn">
+                <span>تأكيد وتسجيل الدخول</span>
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </form>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjXncHwNn0tjweqvmJKmoF9BBkff4vU90",
+            authDomain: "labs-3c92f.firebaseapp.com",
+            projectId: "labs-3c92f",
+            storageBucket: "labs-3c92f.firebasestorage.app",
+            messagingSenderId: "1081268346222",
+            appId: "1:1081268346222:web:fd8e4f28082bd72bfdb57f",
+            measurementId: "G-ZH9N90EGD3"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
+        function handleLogin(e) {
+            e.preventDefault();
+
+            const emailInput = document.getElementById('email').value.trim().toLowerCase();
+            const passwordInput = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // تهيئة واجهة الزر أثناء البحث والتحقق
+            errorDiv.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.querySelector('span').innerText = 'جاري الفحص في قاعدة البيانات...';
+
+            // البحث يدوياً داخل كوليكشن الطالبات في Firestore عن الإيميل المدخل
+            db.collection("students")
+              .where("email", "==", emailInput)
+              .get()
+              .then((querySnapshot) => {
+                  if (querySnapshot.empty) {
+                      throw new Error("عذراً، هذا البريد الإلكتروني غير مسجل لدينا في قاعدة البيانات.");
+                  }
+
+                  let userFound = false;
+
+                  // المطابقة بناءً على الحقل المحدث 'pass' القادم من الفايربيس الخاص بكِ
+                  querySnapshot.forEach((doc) => {
+                      const studentData = doc.data();
+                      if (studentData.pass === passwordInput) {
+                          userFound = true;
+                      }
+                  });
+
+                  if (userFound) {
+                      localStorage.setItem("userEmail", emailInput);
+                      window.location.href = "labs.html";
+                  } else {
+                      throw new Error("كلمة المرور غير صحيحة، يرجى إعادة التأكد.");
+                  }
+              })
+              .catch((error) => {
+                  errorDiv.style.display = 'block';
+                  errorText.innerText = error.message || "حدث خطأ غير متوقع أثناء الاتصال بقاعدة البيانات.";
+                  
+                  submitBtn.disabled = false;
+                  submitBtn.querySelector('span').innerText = 'تأكيد وتسجيل الدخول';
+              });
+        }
+    </script>
+</body>
+</html>
