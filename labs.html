@@ -7,35 +7,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root {
-            --primary-dark: #0f172a;
-            --trust-blue: #1e293b;
+      :root {
+            --bg-darker: #060813;
+            --bg-card: rgba(13, 20, 38, 0.6);
             --accent-gold: #fbbf24;
-            --white: #ffffff;
-            --header-height: 70px;
+            --accent-gold-glow: rgba(251, 191, 36, 0.15);
+            --cyber-blue: #0ea5e9;
+            --cyber-blue-glow: rgba(14, 165, 233, 0.2);
+            --prog-purple: #a855f7;
+            --prog-purple-glow: rgba(168, 85, 247, 0.2);
+            --logout-red: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --header-height: 80px;
+            --border-glow: rgba(255, 255, 255, 0.05);
         }
 
-        /* --- Base Styles --- */
+        /* --- Base & Futuristic Grid Background --- */
         body {
             font-family: 'Tajawal', sans-serif;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            background-color: var(--bg-darker);
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center;
             margin: 0;
             padding: 0;
-            color: var(--white);
+            color: var(--text-main);
             min-height: 100vh;
             box-sizing: border-box;
+            overflow-x: hidden;
         }
 
-        /* --- Simple Header --- */
+        /* --- Premium Floating Header --- */
         header {
             height: var(--header-height);
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(14px);
+            background: rgba(6, 8, 19, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 40px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 0 60px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -43,43 +58,58 @@
 
         .header-logo {
             font-weight: 800;
-            font-size: 1.4rem;
-            letter-spacing: 0.5px;
+            font-size: 1.6rem;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ffffff 30%, var(--accent-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
         }
 
+        /* --- Glassmorphic Cyber Buttons --- */
         .logout-btn {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 8px 16px;
-            border-radius: 10px;
+            background: rgba(244, 63, 94, 0.06);
+            color: #fda4af;
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            padding: 10px 22px;
+            border-radius: 14px;
             cursor: pointer;
-            font-family: 'Tajawal';
-            font-weight: bold;
-            transition: 0.2s ease;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(244, 63, 94, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .logout-btn:hover {
-            background: #ef4444;
-            color: white;
+            background: var(--logout-red);
+            color: var(--text-main);
+            border-color: var(--logout-red);
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.45);
+            transform: translateY(-2px);
         }
 
-        /* --- Main Layout --- */
+        /* --- Main Container --- */
         .container {
-            max-width: 1300px;
+            max-width: 1440px;
             margin: 40px auto;
-            padding: 0 20px;
+            padding: 0 30px;
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 2.3fr 1fr;
             gap: 35px;
         }
 
-        /* --- Video Player Section --- */
+        /* --- Advanced Video Section --- */
         .video-section {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 24px;
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.05);
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: 28px;
+            border: 1px solid var(--border-glow);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
             height: fit-content;
         }
 
@@ -87,9 +117,11 @@
             width: 100%;
             aspect-ratio: 16/9;
             background: #000;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            position: relative;
         }
 
         .video-container iframe {
@@ -99,75 +131,125 @@
         }
 
         #currentTitle {
-            margin: 20px 0 0 0;
-            font-size: 1.4rem;
+            margin: 25px 0 0 0;
+            font-size: 1.45rem;
             font-weight: 700;
-            color: var(--white);
-            line-height: 1.5;
+            color: var(--text-main);
+            line-height: 1.6;
+            letter-spacing: -0.3px;
         }
 
-        /* --- Lessons List Section --- */
+        /* --- Sidebar & Neomorphic Cards --- */
         .lessons-sidebar {
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 30px;
         }
 
         .category-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: 26px;
+            border: 1px solid var(--border-glow);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.05);
         }
 
         .category-card h3 {
-            margin: 0 0 15px 0;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            padding-bottom: 10px;
-        }
-
-        .cyber-title { color: #38bdf8; }
-        .programming-title { color: #a78bfa; }
-
-        .lesson-box {
-            background: rgba(255,255,255,0.02);
-            border-radius: 12px;
-            padding: 14px 16px;
-            border: 1px solid rgba(255,255,255,0.04);
-            margin-bottom: 10px;
-            cursor: pointer;
+            margin: 0 0 22px 0;
+            font-size: 1.25rem;
+            font-weight: 800;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.25s ease;
+            letter-spacing: -0.2px;
+        }
+
+        /* Section Headings Glowing Effects */
+        .cyber-title { 
+            color: var(--cyber-blue); 
+            text-shadow: 0 0 20px var(--cyber-blue-glow);
+        }
+        .programming-title { 
+            color: var(--prog-purple); 
+            text-shadow: 0 0 20px var(--prog-purple-glow);
+        }
+
+        /* --- Glowing & Interactive Lesson Boxes --- */
+        .lesson-box {
+            background: rgba(255, 255, 255, 0.015);
+            border-radius: 16px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .lesson-box:last-child {
             margin-bottom: 0;
         }
 
+        /* Hover Mechanics */
         .lesson-box:hover {
-            border-color: rgba(251,191,36,0.3);
-            background: rgba(251,191,36,0.05);
-            transform: translateX(-3px);
+            background: rgba(251, 191, 36, 0.04);
+            border-color: rgba(251, 191, 36, 0.35);
+            box-shadow: 0 10px 25px var(--accent-gold-glow);
+            transform: translateX(-8px);
         }
 
+        /* Smooth scale for the play icon */
         .lesson-box i {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             color: var(--accent-gold);
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+            transition: transform 0.3s ease;
+        }
+
+        .lesson-box:hover i {
+            transform: scale(1.15);
         }
 
         .lesson-box span {
-            font-size: 0.9rem;
+            font-size: 0.98rem;
             color: #cbd5e1;
+            font-weight: 500;
+            line-height: 1.5;
+            transition: color 0.3s ease;
         }
 
-        /* --- Responsive Design --- */
-        @media (max-width: 1024px) {
+        .lesson-box:hover span {
+            color: var(--text-main);
+        }
+
+        /* --- Responsive Design Upgrades --- */
+        @media (max-width: 1200px) {
             .container {
                 grid-template-columns: 1fr;
+                gap: 30px;
+                margin: 20px auto;
+            }
+            header {
+                padding: 0 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-section, .category-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+            .video-container {
+                border-radius: 14px;
+            }
+            #currentTitle {
+                font-size: 1.2rem;
             }
         }
     </style>
