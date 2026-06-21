@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
       :root {
-            --ide-bg: #1e1e1e;          /* خلفية المحرر الافتراضية VS Code */
-            --ide-sidebar: #252526;     /* خلفية القائمة الجانبية */
-            --ide-header: #3c3c3c;      /* لون شريط التحكم العلوي */
-            --accent-orange: #f47424;   /* لون لغة البرمجة والشغف */
-            --syntax-keyword: #569cd6;  /* أزرق الأكواد البرمجية */
-            --syntax-string: #ce9178;   /* لون النصوص داخل الكود */
-            --syntax-comment: #6a9955;  /* أخضر التعليقات البرمجية */
-            --syntax-type: #4ec9b0;     /* اللون الفيروزي للمتغيرات */
-            --text-main: #d4d4d4;       /* لون النص البرمجي الافتراضي */
+            --ide-bg: #1e1e1e;
+            --ide-sidebar: #252526;
+            --ide-header: #3c3c3c;
+            --accent-orange: #f47424;
+            --syntax-keyword: #569cd6;
+            --syntax-string: #ce9178;
+            --syntax-comment: #6a9955;
+            --syntax-type: #4ec9b0;
+            --text-main: #d4d4d4;
             --header-height: 65px;
             --font-code: 'Consolas', 'Fira Code', 'Courier New', monospace;
         }
@@ -57,12 +57,12 @@
             font-weight: 700;
             font-size: 1.3rem;
             color: var(--syntax-keyword);
-            direction: ltr; /* لتبدو كدالة برمجية صريحة */
+            direction: ltr;
         }
 
         .header-logo::before {
             content: "import { ";
-            color: #c586c0; /* لون الـ Statement */
+            color: #c586c0;
         }
 
         .header-logo::after {
@@ -70,7 +70,38 @@
             color: var(--text-main);
         }
 
-        /* --- Developer Terminal Logout Button --- */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* --- Circular Profile Button --- */
+        .profile-btn {
+            background: rgba(78, 201, 176, 0.1);
+            color: var(--syntax-type);
+            border: 2px solid var(--syntax-type);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%; /* لجعل الزر دائرياً */
+            cursor: pointer;
+            font-family: var(--font-code);
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease-in-out;
+            padding: 0;
+        }
+
+        .profile-btn:hover {
+            background: var(--syntax-type);
+            color: var(--ide-bg);
+            box-shadow: 0 0 15px rgba(78, 201, 176, 0.4);
+            transform: scale(1.05);
+        }
+
         .logout-btn {
             background: transparent;
             color: #f14c4c;
@@ -113,7 +144,6 @@
             position: relative;
         }
 
-        /* محاكاة شريط التبويبات العلوي للمحرر */
         .video-section::before {
             content: "📄 main_compiler.java ●";
             position: absolute;
@@ -170,6 +200,17 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-left: 5px;
+        }
+
+        .lessons-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .lessons-sidebar::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
         }
 
         .category-card {
@@ -193,36 +234,45 @@
         }
 
         .cyber-title { color: var(--syntax-type); }
-        .programming-title { color: #dcdcaa; } /* لون الدوال في VS Code */
+        .programming-title { color: #dcdcaa; }
+        .cpp-title { color: #569cd6; }
+        .python-title { color: #4ec9b0; }
+        .sql-title { color: #ce9178; }
+        .network-title { color: #c586c0; }
+        .excel-title { color: #6a9955; }
 
-        /* --- Git Commit Style Lesson Boxes --- */
         .lesson-box {
             background: rgba(30, 30, 30, 0.5);
             border-radius: 6px;
             padding: 12px 16px;
             border: 1px solid transparent;
-            border-left: 3px solid #424242; /* افتراضي غير نشط */
+            border-left: 3px solid #424242;
             margin-bottom: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .lesson-box:last-child {
-            margin-bottom: 0;
-        }
+        .lesson-box:last-child { margin-bottom: 0; }
 
-        /* تأثير التمرير يحاكي اختيار السطر البرمجي وعلامة الـ Git المحدثة */
-        .lesson-box:hover {
+        .lesson-box:hover:not(.locked) {
             background: #2a2d2e;
             border-color: #383b3d;
             border-left-color: var(--syntax-keyword);
             transform: scale(1.01);
         }
 
-        .lesson-box i {
+        .lesson-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .lesson-box i.play-icon {
             font-size: 1rem;
             color: var(--syntax-comment);
         }
@@ -236,27 +286,107 @@
             text-overflow: ellipsis;
         }
 
-        .lesson-box:hover span {
-            color: #ffffff;
+        .lesson-box:hover:not(.locked) span { color: #ffffff; }
+
+        .lesson-box.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-left: 3px solid #f14c4c;
+        }
+        
+        .lesson-box.locked i.lock-icon { color: #f14c4c; }
+
+        /* --- IDE Styled Profile Modal Window --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0; pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .profile-modal {
+            background: var(--ide-bg);
+            border: 1px solid #3e3e42;
+            border-radius: 10px;
+            width: 90%; max-width: 550px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            overflow: hidden;
+            font-family: var(--font-code);
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active .profile-modal { transform: translateY(0); }
+
+        .modal-header {
+            background: var(--ide-sidebar);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #2d2d2d;
+        }
+        .modal-header-title { color: var(--syntax-type); font-size: 0.9rem; }
+        .close-modal-btn {
+            background: transparent; border: none; color: #888;
+            font-size: 1.2rem; cursor: pointer; transition: 0.2s;
+        }
+        .close-modal-btn:hover { color: #fff; }
+
+        .modal-body { padding: 25px; line-height: 1.7; font-size: 0.95rem; }
+
+        /* --- Circular Avatar Inside Modal --- */
+        .modal-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(78, 201, 176, 0.05);
+            border: 2px dashed var(--syntax-type);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            color: var(--syntax-type);
+            font-size: 2rem;
+            font-weight: bold;
         }
 
-        /* --- Responsive Tweaks --- */
+        .json-syntax { color: var(--syntax-keyword); }
+        .json-key { color: #9cdcfe; }
+        .json-string { color: var(--syntax-string); }
+        .json-comment { color: var(--syntax-comment); display: block; margin-bottom: 10px; }
+        
+        .allowed-tags-container {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; padding-right: 20px;
+        }
+        .category-tag {
+            background: rgba(86, 156, 214, 0.15);
+            color: var(--syntax-keyword);
+            padding: 4px 10px; border-radius: 4px;
+            font-size: 0.8rem; border: 1px solid rgba(86, 156, 214, 0.3);
+        }
+
         @media (max-width: 1100px) {
-            .container {
-                grid-template-columns: 1fr;
-                margin: 40px auto;
-            }
-            .video-section::before {
-                display: none; /* إخفاء علامة التبويب في الشاشات الصغيرة لتجنب التداخل */
-            }
+            .container { grid-template-columns: 1fr; margin: 40px auto; }
+            .video-section::before { display: none; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-logo">TechFlow <span style="color: var(--accent-gold);">Academy</span></div>
-        <button class="logout-btn" onclick="logoutAction()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        <div class="header-logo">TechFlow <span style="color: var(--accent-orange);">Academy</span></div>
+        <div class="header-actions">
+            <!-- الزر الدائري الجديد للملف الشخصي -->
+            <button class="profile-btn" id="userCircleBtn" onclick="openProfileModal()" title="الملف الشخصي">U</button>
+            <button class="logout-btn" onclick="logoutAction()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+        </div>
     </header>
 
     <div class="container">
@@ -267,7 +397,7 @@
                     src="" 
                     allow="autoplay; fullscreen;" 
                     allowfullscreen>
-                </iframe>
+                 </iframe>
             </div>
             <h2 id="currentTitle">اختر درساً من القائمة لبدء المشاهدة 🚀</h2>
         </main>
@@ -282,7 +412,58 @@
                 <h3 class="programming-title"><i class="fas fa-code"></i> لغات البرمجة</h3>
                 <div id="programmingLessons"></div>
             </div>
+
+            <div class="category-card">
+                <h3 class="cpp-title"><i class="fab fa-cplusplus"></i> دورة C++</h3>
+                <div id="cppLessons"></div>
+            </div>
+
+            <div class="category-card">
+                <h3 class="python-title"><i class="fab fa-python"></i> دورة Python</h3>
+                <div id="pythonLessons"></div>
+            </div>
+
+            <div class="category-card">
+                <h3 class="sql-title"><i class="fas fa-database"></i> إدارة قواعد البيانات SQL</h3>
+                <div id="sqlLessons"></div>
+            </div>
+
+            <div class="category-card">
+                <h3 class="network-title"><i class="fas fa-network-wired"></i> NETWORK LAB</h3>
+                <div id="networkLessons"></div>
+            </div>
+
+            <div class="category-card">
+                <h3 class="excel-title"><i class="fas fa-file-excel"></i> دورة EXCEL</h3>
+                <div id="excelLessons"></div>
+            </div>
         </aside>
+    </div>
+
+    <!-- نافذة عرض الملف الشخصي -->
+    <div class="modal-overlay" id="profileModalOverlay" onclick="closeProfileModal()">
+        <div class="profile-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-header-title"><i class="fas fa-file-alt"></i> student_profile.json</div>
+                <button class="close-modal-btn" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- الدائرة الرمزية داخل النافذة -->
+                <div class="modal-avatar" id="modalAvatarChar">U</div>
+
+                <span class="json-comment">// بيانات المشتركة الحالية في أنظمة أكاديمية TechFlow</span>
+                <span class="json-syntax">{</span><br>
+                &nbsp;&nbsp;<span class="json-key">"اسم_الطالبة"</span>: <span class="json-string" id="profName">"جاري التحميل..."</span>,<br>
+                &nbsp;&nbsp;<span class="json-key">"البريد_الإلكتروني"</span>: <span class="json-string" id="profEmail">"جاري التحميل..."</span>,<br>
+                &nbsp;&nbsp;<span class="json-key">"الدور_الوظيفي"</span>: <span class="json-string">"Student / مشتركة"</span>,<br>
+                &nbsp;&nbsp;<span class="json-key">"الأقسام_المفعلة"</span>: <span class="json-syntax">[</span>
+                <div class="allowed-tags-container" id="profCategories">
+                    <!-- سيتم تعبئة الأقسام النشطة هنا -->
+                </div>
+                &nbsp;&nbsp;<span class="json-syntax">]</span><br>
+                <span class="json-syntax">}</span>
+            </div>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -290,7 +471,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <script>
-        // إعدادات Firebase الخاصة بمشروعك
         const firebaseConfig = {
             apiKey: "AIzaSyCjXncHwNn0tjweqvmJKmoF9BBkff4vU90",
             authDomain: "labs-3c92f.firebaseapp.com",
@@ -307,34 +487,83 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // التأكد من تسجيل الدخول أولاً قبل جلب الدروس
+        let currentStudentData = null;
+
+        const categoryMapNames = {
+            cyber: "🛡️ الأمن السيبراني",
+            programming: "💻 لغات البرمجة",
+            cpp: "🔹 دورة C++",
+            python: "🐍 دورة Python",
+            sql: "💾 قواعد البيانات SQL",
+            network: "🌐 NETWORK LAB",
+            excel: "📊 دورة EXCEL"
+        };
+
         function checkAuthAndLoad() {
             const savedEmail = localStorage.getItem("userEmail");
             if (!savedEmail) { 
                 window.location.href = "login.html"; 
             } else {
-                loadLessonsOnly();
+                fetchCurrentStudentAndLoad(savedEmail);
             }
         }
 
-        // دالة جلب وعرض الدروس فقط ومراقبتها بشكل حي
+        function fetchCurrentStudentAndLoad(email) {
+            db.collection("students")
+              .where("email", "==", email.toLowerCase().trim())
+              .onSnapshot(querySnapshot => {
+                  if (!querySnapshot.empty) {
+                      currentStudentData = querySnapshot.docs[0].data();
+                      
+                      // استخراج الحرف الأول من الاسم لتحديث الدائرة العلوية ودائرة النافذة
+                      const firstName = currentStudentData.first_name || 'طالبة';
+                      const firstChar = firstName.charAt(0).toUpperCase();
+                      
+                      document.getElementById('userCircleBtn').innerText = firstChar;
+                      document.getElementById('modalAvatarChar').innerText = firstChar;
+
+                      // تحديث واجهة الملف الشخصي بالبيانات الحية
+                      document.getElementById('profName').innerText = `"${firstName}"`;
+                      document.getElementById('profEmail').innerText = `"${currentStudentData.email}"`;
+                      
+                      const tagsContainer = document.getElementById('profCategories');
+                      tagsContainer.innerHTML = "";
+                      
+                      const allowedCats = currentStudentData.allowedCategories || [];
+                      if (allowedCats.length === 0) {
+                          tagsContainer.innerHTML = `<span style="color:var(--syntax-comment); font-size:0.85rem;">// لم يتم تفعيل أقسام كاملة بعد، تظهر لكِ الفيديوهات التجريبية فقط.</span>`;
+                      } else {
+                          allowedCats.forEach(catId => {
+                              const badge = document.createElement('span');
+                              badge.className = "category-tag";
+                              badge.innerText = categoryMapNames[catId] || catId;
+                              tagsContainer.appendChild(badge);
+                          });
+                      }
+                  }
+                  loadLessonsOnly();
+              }, error => {
+                  console.error("Error fetching student profile:", error);
+                  loadLessonsOnly();
+              });
+        }
+
         function loadLessonsOnly() {
             const sections = { 
                 cyber: 'cyberLessons', 
-                programming: 'programmingLessons' 
+                programming: 'programmingLessons',
+                cpp: 'cppLessons',
+                python: 'pythonLessons',
+                sql: 'sqlLessons',
+                network: 'networkLessons',
+                excel: 'excelLessons'
             };
 
-            // وضع مؤشر التحميل المؤقت
-            Object.values(sections).forEach(id => {
-                document.getElementById(id).innerHTML = `<p style="font-size:0.8rem; text-align:center; opacity:0.5; padding:10px;">جاري تحميل الدروس...</p>`;
-            });
-
-            // جلب الدروس مرتبة من الأحدث للأقدم
             db.collection("lessons")
-              .orderBy("createdAt", "desc")
-              .onSnapshot(snap => {
+              .orderBy("createdAt", "asc")
+              .get()
+              .then(snap => {
                 
-                // تفريغ الحاويات فور وصول البيانات الحية
                 Object.values(sections).forEach(id => {
                     document.getElementById(id).innerHTML = "";
                 });
@@ -346,31 +575,70 @@
                     return;
                 }
 
+                const categoryCounters = {};
+                const allowedCategories = currentStudentData && currentStudentData.allowedCategories ? currentStudentData.allowedCategories : [];
+
                 snap.docs.forEach(docItem => {
                     const lesson = docItem.data();
+                    const category = lesson.category;
 
-                    // التحقق من تصنيف الدرس إذا كان يتبع للأمن السيبراني أو البرمجة
-                    if (sections[lesson.category]) {
+                    if (sections[category]) {
+                        if (!categoryCounters[category]) {
+                            categoryCounters[category] = 0;
+                        }
+                        categoryCounters[category]++;
+
                         const div = document.createElement('div');
                         div.className = "lesson-box";
-                        div.innerHTML = `
-                            <i class="fas fa-play-circle"></i>
-                            <span>${lesson.title}</span>
-                        `;
 
-                        // عند النقر يتم تشغيل الفيديو وتحديث العنوان مباشرة
-                        div.onclick = () => playVideo(lesson.url, lesson.title);
+                        const isAccessible = (categoryCounters[category] === 1) || 
+                                             (lesson.isFree === true) || 
+                                             (allowedCategories.includes(category));
 
-                        const targetId = sections[lesson.category];
+                        if (isAccessible) {
+                            div.innerHTML = `
+                                <div class="lesson-info">
+                                    <i class="fas fa-play-circle play-icon"></i>
+                                    <span>${lesson.title}</span>
+                                </div>
+                            `;
+                            div.onclick = () => playVideo(lesson.url, lesson.title);
+                        } else {
+                            div.classList.add("locked");
+                            div.innerHTML = `
+                                <div class="lesson-info">
+                                    <i class="fas fa-lock lock-icon"></i>
+                                    <span style="opacity: 0.6;">${lesson.title} (مغلق)</span>
+                                </div>
+                                <i class="fas fa-shield-alt" style="font-size:0.8rem; color:#f14c4c;" title="يتطلب إذن الإدارة"></i>
+                            `;
+                            div.onclick = () => alert("هذا القسم مغلق حالياً. يرجى تفعيل الدورة التدريبية من الإدارة لتتمكني من مشاهدة جميع محتوياتها 🛡️");
+                        }
+
+                        const targetId = sections[category];
                         document.getElementById(targetId).appendChild(div);
                     }
                 });
-            }, error => {
+
+                Object.keys(sections).forEach(cat => {
+                    if (!categoryCounters[cat]) {
+                        document.getElementById(sections[cat]).innerHTML = `<p style="font-size:0.8rem; text-align:center; opacity:0.4;">لا توجد دروس حالياً</p>`;
+                    }
+                });
+
+            }).catch(error => {
                 console.error("Firestore Error:", error);
             });
         }
 
-        // دالة معالجة روابط الفيديو وتشغيلها (يوتيوب أو جوجل درايف)
+        function openProfileModal() {
+            document.getElementById('profileModalOverlay').classList.add('active');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModalOverlay').classList.remove('active');
+        }
+
         function playVideo(url, title) {
             let finalUrl = url;
 
@@ -389,13 +657,11 @@
             document.getElementById('currentTitle').innerText = title;
         }
 
-        // تسجيل الخروج
         const logoutAction = () => auth.signOut().then(() => {
             localStorage.removeItem("userEmail");
             window.location.href = "login.html";
         });
 
-        // تشغيل الفحص والجلب فوراً
         checkAuthAndLoad();
     </script>
 </body>
