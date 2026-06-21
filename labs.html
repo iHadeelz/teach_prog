@@ -19,6 +19,7 @@
             --text-main: #d4d4d4;
             --header-height: 65px;
             --font-code: 'Consolas', 'Fira Code', 'Courier New', monospace;
+            --whatsapp-green: #25d366; /* لون الواتساب الرسمي للتناسق */
         }
 
         /* --- Base Setup & Code Background --- */
@@ -83,7 +84,7 @@
             border: 2px solid var(--syntax-type);
             width: 42px;
             height: 42px;
-            border-radius: 50%; /* لجعل الزر دائرياً */
+            border-radius: 50%;
             cursor: pointer;
             font-family: var(--font-code);
             font-weight: bold;
@@ -372,9 +373,50 @@
             font-size: 0.8rem; border: 1px solid rgba(86, 156, 214, 0.3);
         }
 
+        /* --- Floating WhatsApp Button --- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            left: 30px; /* متموضع في اليسار لعدم تغطية أي محتوى رئيسي */
+            background-color: rgba(37, 211, 102, 0.15);
+            color: var(--whatsapp-green);
+            border: 2px solid var(--whatsapp-green);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 28px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .whatsapp-float:hover {
+            background-color: var(--whatsapp-green);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(37, 211, 102, 0.6);
+            transform: scale(1.1) translateY(-5px);
+        }
+
+        /* إضافة وميض هادئ لجذب انتباه الطالب */
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .whatsapp-float {
+            animation: pulse-border 2s infinite;
+        }
+
         @media (max-width: 1100px) {
             .container { grid-template-columns: 1fr; margin: 40px auto; }
             .video-section::before { display: none; }
+            .whatsapp-float { bottom: 20px; left: 20px; width: 50px; height: 50px; font-size: 24px; }
         }
     </style>
 </head>
@@ -383,7 +425,6 @@
     <header>
         <div class="header-logo">TechFlow <span style="color: var(--accent-orange);">Academy</span></div>
         <div class="header-actions">
-            <!-- الزر الدائري الجديد للملف الشخصي -->
             <button class="profile-btn" id="userCircleBtn" onclick="openProfileModal()" title="الملف الشخصي">U</button>
             <button class="logout-btn" onclick="logoutAction()"><i class="fas fa-sign-out-alt"></i> خروج</button>
         </div>
@@ -440,7 +481,6 @@
         </aside>
     </div>
 
-    <!-- نافذة عرض الملف الشخصي -->
     <div class="modal-overlay" id="profileModalOverlay" onclick="closeProfileModal()">
         <div class="profile-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
@@ -448,7 +488,6 @@
                 <button class="close-modal-btn" onclick="closeProfileModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <!-- الدائرة الرمزية داخل النافذة -->
                 <div class="modal-avatar" id="modalAvatarChar">U</div>
 
                 <span class="json-comment">// بيانات المشتركة الحالية في أنظمة أكاديمية TechFlow</span>
@@ -458,13 +497,19 @@
                 &nbsp;&nbsp;<span class="json-key">"الدور_الوظيفي"</span>: <span class="json-string">"Student / مشتركة"</span>,<br>
                 &nbsp;&nbsp;<span class="json-key">"الأقسام_المفعلة"</span>: <span class="json-syntax">[</span>
                 <div class="allowed-tags-container" id="profCategories">
-                    <!-- سيتم تعبئة الأقسام النشطة هنا -->
-                </div>
+                    </div>
                 &nbsp;&nbsp;<span class="json-syntax">]</span><br>
                 <span class="json-syntax">}</span>
             </div>
         </div>
     </div>
+
+    <a href="https://wa.me/966545603319?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%A3%D9%83%D8%A7%D8%AF%D9%8A%D9%85%D9%8A%D8%A9%20TechFlow%D8%8C%20%D9%8A%D8%B1%D8%AC%D9%8A%20%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%AA%D9%8A%20%D9%81%D9%8A%20%D8%A3%D8%AD%D8%AF%20%D8%A7%D9%84%D8%AF%D8%B1%D9%84%D9%88%D8%B3" 
+       class="whatsapp-float" 
+       target="_blank" 
+       title="تواصل معنا عبر واتساب">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
