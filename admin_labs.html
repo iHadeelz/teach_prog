@@ -2,14 +2,16 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة تحكم إدارة الأكاديمية - المحدثة</title>
+    <title>لوحة تحكم إدارة الأكاديمية - تفعيل الأقسام</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { --primary: #1e293b; --accent: #fbbf24; --success: #10b981; --secondary: #64748b; }
         body { font-family: system-ui, -apple-system, sans-serif; margin: 0; background: #f8fafc; color: #334155; display: flex; }
-        .sidebar { width: 260px; background: var(--primary); color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; position: fixed; }
+        .sidebar { width: 260px; background: var(--primary); color: white; min-height: 100vh; padding: 20px; box-sizing: border-box; position: fixed; display: flex; flex-direction: column; justify-content: space-between; }
         .sidebar h2 { color: var(--accent); text-align: center; margin-bottom: 30px; }
-        .nav-link { padding: 12px 15px; margin: 8px 0; border-radius: 8px; display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.05); }
+        .nav-link { padding: 12px 15px; margin: 8px 0; border-radius: 8px; display: flex; gap: 10px; align-items: center; background: rgba(255,255,255,0.05); text-decoration: none; color: white; }
+        .nav-link.whatsapp-link { background: #25D366; color: white; font-weight: bold; margin-top: auto; }
+        .nav-link.whatsapp-link:hover { background: #20ba5a; }
         .main { margin-right: 260px; width: calc(100% - 260px); padding: 30px; box-sizing: border-box; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .stat-card { background: white; padding: 25px; border-radius: 12px; display: flex; align-items: center; gap: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); max-width: 350px; margin-bottom: 30px; border-right: 5px solid var(--accent); }
@@ -17,26 +19,60 @@
         .stat-card h4 { margin: 0; color: var(--secondary); font-size: 1.1rem; }
         .stat-card span { font-size: 2rem; font-weight: bold; color: var(--primary); }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .grid-full { grid-column: span 2; }
         .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .card h3 { margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; color: var(--primary); border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; }
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #cbd5e1; box-sizing: border-box; font-size: 0.95rem; }
         button { background: var(--primary); color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; }
         button:hover { opacity: 0.9; }
         .btn-success { background: var(--success); }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+            padding: 5px;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .checkbox-container input { width: auto; margin: 0; transform: scale(1.2); }
+        
+        /* تصميم جدول الصلاحيات للأقسام */
+        .student-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 15px;
+        }
+        .student-row:last-child { border-bottom: none; }
+        .student-info { flex: 1; }
+        .student-info b { color: var(--primary); }
+        .student-info p { margin: 4px 0 0 0; font-size: 0.85rem; color: var(--secondary); }
+        .student-actions { display: flex; gap: 10px; align-items: center; flex: 1; }
+        .student-actions select { margin: 0; padding: 8px; }
+        .student-actions button { margin: 0; padding: 8px 15px; width: auto; white-space: nowrap; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>TechFlow Admin</h2>
-        <div class="nav-link"><i class="fas fa-user-shield"></i> لوحة الإدارة المحدثة</div>
+        <div>
+            <h2>TechFlow Admin</h2>
+            <div class="nav-link"><i class="fas fa-user-shield"></i> لوحة الأقسام والصلاحيات</div>
+        </div>
+        <a href="https://web.whatsapp.com/" target="_blank" class="nav-link whatsapp-link">
+            <i class="fab fa-whatsapp"></i> تواصل واتساب الإدارة
+        </a>
     </div>
 
     <div class="main">
         <div class="header">
             <div>
                 <h1>لوحة التحكم الإدارية ✨</h1>
-                <p>مرحباً يا <b>هدولتي</b>، تم ضبط اللوحة وتأمين الاتصال بقاعدة البيانات بنجاح.</p>
+                <p>مرحباً يا <b>هدولتي</b>، يمكنك الآن التحكم بتفعيل الأقسام الكاملة للمشتركات بكل سهولة.</p>
             </div>
         </div>
 
@@ -61,12 +97,35 @@
             <div class="card">
                 <h3><i class="fas fa-book-medical"></i> إضافة درس جديد</h3>
                 <input type="text" id="videoTitle" placeholder="عنوان الدرس">
+                
                 <select id="videoCategory">
                     <option value="cyber">🛡️ الأمن السيبراني</option>
                     <option value="programming">💻 لغات البرمجة</option>
+                    <option value="cpp">🔹 دورة C++</option>
+                    <option value="python">🐍 دورة Python</option>
+                    <option value="sql">💾 إدارة قواعد البيانات SQL</option>
+                    <option value="network">🌐 NETWORK LAB</option>
+                    <option value="excel">📊 دورة EXCEL</option>
                 </select>
-                <input type="text" id="videoUrl" placeholder="رابط الدرس (Google Drive)">
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="isFreeVideo">
+                    <label for="isFreeVideo">🔓 فتح هذا الدرس مجاناً لجميع الطالبات بدون تواصل؟</label>
+                </div>
+
+                <input type="text" id="videoUrl" placeholder="رابط الدرس (Google Drive أو Youtube)">
                 <button id="uploadContentBtn" class="btn-success">نشر الدرس الآن 🚀</button>
+            </div>
+
+            <!-- بطاقة إدارة صلاحيات الأقسام المحدثة -->
+            <div class="card grid-full">
+                <h3><i class="fas fa-key"></i> التحكم بصلاحيات تفعيل الأقسام للمشتركات</h3>
+                <p style="font-size: 0.9rem; color: var(--secondary); margin-top:-10px; margin-bottom:20px;">
+                    اختاري القسم الكامل المراد تفعيله للطالبة. (ملاحظة: أول درس من كل قسم يظهر مفتوحاً تلقائياً للطالبات للتجربة) 💡
+                </p>
+                <div id="studentsPermissionsList">
+                    <p style="text-align: center; opacity: 0.5; font-size: 0.9rem;">جاري تحميل قائمة الطالبات والأقسام...</p>
+                </div>
             </div>
 
         </div>
@@ -74,9 +133,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // إعدادات مشروعكِ الخاص بـ Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyCjXncHwNn0tjweqvmJKmoF9BBkff4vU90",
             authDomain: "labs-3c92f.firebaseapp.com",
@@ -90,13 +148,94 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 1. حساب وعرض إجمالي عدد الطالبات تلقائياً وبشكل حي
+        // مصفوفة ثابتة تحتوي على أسماء الأقسام البرمجية لربط الصلاحيات بها
+        const academyCategories = [
+            { id: "cyber", title: "🛡️ الأمن السيبراني" },
+            { id: "programming", title: "💻 لغات البرمجة" },
+            { id: "cpp", title: "🔹 دورة C++" },
+            { id: "python", title: "🐍 دورة Python" },
+            { id: "sql", title: "💾 إدارة قواعد البيانات SQL" },
+            { id: "network", title: "🌐 NETWORK LAB" },
+            { id: "excel", title: "📊 دورة EXCEL" }
+        ];
+
+        // مراقبة حسابات الطالبات لبناء واجهة التحكم بصلاحيات الأقسام ديناميكياً
+        let studentsSnapCache = null;
         onSnapshot(collection(db, "students"), snap => {
             const totalStudentsEl = document.getElementById('totalStudents');
             if (totalStudentsEl) totalStudentsEl.innerText = snap.size;
+            
+            studentsSnapCache = snap;
+            updatePermissionsUI();
         });
 
-        // 2. معالجة وحفظ زر إضافة طالبة جديدة
+        function updatePermissionsUI() {
+            const container = document.getElementById('studentsPermissionsList');
+            if (!container || !studentsSnapCache) return;
+
+            if (studentsSnapCache.empty) {
+                container.innerHTML = `<p style="text-align: center; opacity: 0.5; font-size: 0.9rem;">لا توجد طالبات مسجلات حالياً</p>`;
+                return;
+            }
+
+            container.innerHTML = "";
+
+            studentsSnapCache.forEach(studentDoc => {
+                const student = studentDoc.data();
+                const studentId = studentDoc.id;
+
+                const row = document.createElement('div');
+                row.className = "student-row";
+
+                // توليد قائمة الأقسام والتحقق إن كان القسم مفعلاً مسبقاً للطالبة
+                let categoryOptions = `<option value="">-- اختاري القسم لفتحه كاملاً --</option>`;
+                academyCategories.forEach(cat => {
+                    const isAlreadyAllowed = student.allowedCategories && student.allowedCategories.includes(cat.id);
+                    categoryOptions += `<option value="${cat.id}" ${isAlreadyAllowed ? 'disabled' : ''}>${cat.title} ${isAlreadyAllowed ? '🔓 (مفعل كاملاً)' : ''}</option>`;
+                });
+
+                row.innerHTML = `
+                    <div class="student-info">
+                        <b>${student.first_name || 'طالبة'}</b>
+                        <p><i class="fas fa-envelope"></i> ${student.email}</p>
+                    </div>
+                    <div class="student-actions">
+                        <select id="select_${studentId}">
+                            ${categoryOptions}
+                        </select>
+                        <button onclick="grantCategoryAccess('${studentId}', 'select_${studentId}')" class="btn-success">تفعيل القسم 🔑</button>
+                    </div>
+                `;
+
+                container.appendChild(row);
+            });
+        }
+
+        // دالة إرسال صلاحية القسم المفتوح إلى مستند الطالبة في Firestore داخل مصفوفة allowedCategories
+        window.grantCategoryAccess = async function(studentId, selectId) {
+            const selectEl = document.getElementById(selectId);
+            const categoryId = selectEl.value;
+
+            if (!categoryId) {
+                alert("هدولتي، يرجى اختيار قسم من القائمة أولاً لتفعيله للطالبة 🌸");
+                return;
+            }
+
+            try {
+                const studentRef = doc(db, "students", studentId);
+                // استخدام arrayUnion لإضافة معرف القسم المفتوح لضمان عدم التكرار
+                await updateDoc(studentRef, {
+                    allowedCategories: arrayUnion(categoryId)
+                });
+
+                alert("تم تفعيل القسم المختار كاملاً لهذه الطالبة بنجاح يا هدولتي! 🔓✨");
+            } catch (error) {
+                console.error("Error updating student permissions:", error);
+                alert("حدث خطأ أثناء محاولة تفعيل القسم ❌");
+            }
+        };
+
+        // إدارة إضافة طالبة جديدة
         document.getElementById('addStudentBtn').onclick = async () => {
             const nameInput = document.getElementById('newStudentName');
             const emailInput = document.getElementById('newStudentEmail');
@@ -112,12 +251,12 @@
             }
             
             try {
-                // الحفظ المباشر داخل مجموعة students بمطابقة حقول الكونسول لديكِ تماماً
                 await addDoc(collection(db, "students"), { 
                     first_name: name, 
                     email: email, 
                     pass: code, 
-                    role: "student"
+                    role: "student",
+                    allowedCategories: [] // تهيئة مصفوفة الأقسام المفتوحة كفارغة
                 });
                 
                 alert(`تم إضافة الطالبة ${name} بنجاح يا هدولتي! ✨`);
@@ -128,36 +267,34 @@
             }
         };
 
-        // 3. معالجة وحفظ زر إضافة درس جديد
+        // إدارة إضافة ونشر درس جديد
         document.getElementById('uploadContentBtn').onclick = async () => {
             const titleInput = document.getElementById('videoTitle');
             const categorySelect = document.getElementById('videoCategory');
             const urlInput = document.getElementById('videoUrl');
+            const isFreeCheckbox = document.getElementById('isFreeVideo');
 
             const title = titleInput.value.trim();
             const category = categorySelect.value;
             const url = urlInput.value.trim();
+            const isFree = isFreeCheckbox.checked;
 
             if (!title || !url) { 
                 alert("هدولتي، تأكدي من كتابة عنوان الدرس ورابط الفيديو 🌸"); 
                 return; 
             }
-            if (!url.includes("drive.google.com")) { 
-                alert("تنبيه هدولتي: النظام مخصص لروابط Google Drive فقط! ⚠️"); 
-                return; 
-            }
 
             try {
-                // الحفظ المباشر داخل مجموعة lessons بمطابقة حقول الكونسول لديكِ تماماً
                 await addDoc(collection(db, "lessons"), { 
                     title: title, 
                     category: category, 
                     url: url, 
+                    isFree: isFree, 
                     createdAt: serverTimestamp() 
                 });
                 
                 alert(`تم نشر درس "${title}" بنجاح في القسم المطلوب! 🚀`);
-                titleInput.value = ""; urlInput.value = "";
+                titleInput.value = ""; urlInput.value = ""; isFreeCheckbox.checked = false;
             } catch (error) { 
                 console.error("Firebase Add Lesson Error:", error);
                 alert("حدث خطأ أثناء رفع الدرس ❌"); 
